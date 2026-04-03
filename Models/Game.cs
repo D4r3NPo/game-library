@@ -1,4 +1,4 @@
-public record Game(string Id, string Title, Platform[] Platform, Genre[] genres, Status Status, int? Rating);
+public record Game(string Id, string Title, Platform[] Platforms, Genre[] Genres, Status Status, int? Rating);
 
 public enum Platform
 {
