@@ -110,4 +110,46 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
+    [Fact]
+    public async Task Get_With_Filters_Works()
+    {
+        var game1 = new Game
+        {
+            Id = "game1",
+            Title = "Game 1",
+            Platforms = [Platform.Windows],
+            Genres = [Genre.RPG],
+            Status = Status.ToDo,
+            Rating = 5
+        };
+
+        var game2 = new Game
+        {
+            Id = "game2",
+            Title = "Game 2",
+            Platforms = [Platform.Linux, Platform.Windows],
+            Genres = [Genre.FPS],
+            Status = Status.InProgress,
+            Rating = 7
+        };
+
+        await _client.PostAsJsonAsync("/api/games", game1);
+        await _client.PostAsJsonAsync("/api/games", game2);
+
+        var response = await _client.GetAsync("/api/games?status=ToDo&platform=Windows");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var games = await response.Content.ReadFromJsonAsync<List<Game>>();
+        Assert.NotNull(games);
+        Assert.Single(games);
+        Assert.Equal(game1.Title, games[0].Title);
+
+        response = await _client.GetAsync("/api/games?platform=Windows");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        games = await response.Content.ReadFromJsonAsync<List<Game>>();
+        Assert.NotNull(games);
+        Assert.Equal(2, games.Count);
+    }
+
 }
