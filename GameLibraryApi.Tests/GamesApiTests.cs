@@ -4,14 +4,17 @@ using GameLibraryApi.Models;
 
 namespace GameLibraryApi.Tests;
 
-public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
+public class GamesApiTests
 {
-    private readonly HttpClient _client = factory.CreateClient();
+    private static CustomWebApplicationFactory CreateFactory() => new();
 
     [Fact]
     public async Task Get_Games_Returns_Ok()
     {
-        var response = await _client.GetAsync("/api/games");
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+
+        var response = await client.GetAsync("/api/games");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
@@ -19,6 +22,9 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
     [Fact]
     public async Task Post_Then_GetById_Works()
     {
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+
         var game = new Game
         {
             Id = "celeste",
@@ -29,10 +35,10 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
             Rating = 10
         };
 
-        var postResponse = await _client.PostAsJsonAsync("/api/games", game);
+        var postResponse = await client.PostAsJsonAsync("/api/games", game);
         Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
 
-        var getResponse = await _client.GetAsync("/api/games/celeste");
+        var getResponse = await client.GetAsync("/api/games/celeste");
         Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
 
         var createdGame = await getResponse.Content.ReadFromJsonAsync<Game>();
@@ -44,7 +50,10 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
     [Fact]
     public async Task Get_Unknown_Game_Returns_NotFound()
     {
-        var response = await _client.GetAsync("/api/games/unknown");
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+
+        var response = await client.GetAsync("/api/games/unknown");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -52,9 +61,27 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
     [Fact]
     public async Task Update_Then_Get_Works()
     {
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+
+        var gameId = "celeste-update";
+
+        var initialGame = new Game
+        {
+            Id = gameId,
+            Title = "Celeste",
+            Platforms = [],
+            Genres = [],
+            Status = Status.ToDo,
+            Rating = 10
+        };
+
+        var createResponse = await client.PostAsJsonAsync("/api/games", initialGame);
+        Assert.Equal(HttpStatusCode.Created, createResponse.StatusCode);
+
         var updatedGame = new Game
         {
-            Id = "celeste",
+            Id = gameId,
             Title = "Celeste",
             Platforms = [],
             Genres = [],
@@ -62,10 +89,10 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
             Rating = 2
         };
 
-        var updateGameResponse = await _client.PutAsJsonAsync("/api/games/celeste", updatedGame);
+        var updateGameResponse = await client.PutAsJsonAsync($"/api/games/{gameId}", updatedGame);
         Assert.Equal(HttpStatusCode.OK, updateGameResponse.StatusCode);
 
-        var getUpdatedGameResponse = await _client.GetAsync("/api/games/celeste");
+        var getUpdatedGameResponse = await client.GetAsync($"/api/games/{gameId}");
         Assert.Equal(HttpStatusCode.OK, getUpdatedGameResponse.StatusCode);
 
         var retrievedUpdatedGame = await getUpdatedGameResponse.Content.ReadFromJsonAsync<Game>();
@@ -77,6 +104,9 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
     [Fact]
     public async Task Create_With_Invalid_Title_Returns_BadRequest()
     {
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+
         var game = new Game
         {
             Id = "",
@@ -87,7 +117,7 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
             Rating = 5
         };
 
-        var response = await _client.PostAsJsonAsync("/api/games", game);
+        var response = await client.PostAsJsonAsync("/api/games", game);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -95,6 +125,9 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
     [Fact]
     public async Task Create_With_Invalid_Rating_Returns_BadRequest()
     {
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+
         var game = new Game
         {
             Id = "game-name",
@@ -105,7 +138,7 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
             Rating = 15
         };
 
-        var response = await _client.PostAsJsonAsync("/api/games", game);
+        var response = await client.PostAsJsonAsync("/api/games", game);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -113,6 +146,9 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
     [Fact]
     public async Task Get_With_Filters_Works()
     {
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+
         var game1 = new Game
         {
             Id = "game1",
@@ -133,10 +169,10 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
             Rating = 7
         };
 
-        await _client.PostAsJsonAsync("/api/games", game1);
-        await _client.PostAsJsonAsync("/api/games", game2);
+        await client.PostAsJsonAsync("/api/games", game1);
+        await client.PostAsJsonAsync("/api/games", game2);
 
-        var response = await _client.GetAsync("/api/games?status=ToDo&platform=Windows");
+        var response = await client.GetAsync("/api/games?status=ToDo&platform=Windows");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         var games = await response.Content.ReadFromJsonAsync<List<Game>>();
@@ -144,7 +180,7 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
         Assert.Single(games);
         Assert.Equal(game1.Title, games[0].Title);
 
-        response = await _client.GetAsync("/api/games?platform=Windows");
+        response = await client.GetAsync("/api/games?platform=Windows");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         games = await response.Content.ReadFromJsonAsync<List<Game>>();
