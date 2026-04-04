@@ -16,7 +16,7 @@ This project lets you create, read, update, and delete games, with filtering, se
 - Filter by platform
 - Data validation
 - SQLite database with Entity Framework Core
-- Swagger UI for testing endpoints
+- Test coverage
 
 ---
 
@@ -27,24 +27,6 @@ This project lets you create, read, update, and delete games, with filtering, se
 - Entity Framework Core
 - SQLite
 - OpenAPI
-
----
-
-## Game Model
-
-A game contains the following fields:
-
-- `Id`
-- `Title`
-- `Genre`
-- `Platform`
-- `Status`
-- `Rating`
-
-### Example statuses
-- `ToDo`
-- `Playing`
-- `Finished`
 
 ---
 
@@ -91,5 +73,5 @@ A game contains the following fields:
 git clone https://github.com/D4r3NPo/game-library-api.git
 cd game-library-api
 dotnet restore
-dotnet ef database update
-dotnet run
+dotnet ef database update --project GameLibraryApi
+dotnet run --project GameLibraryApi
