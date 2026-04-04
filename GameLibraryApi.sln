@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLibraryApi", "GameLibra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLibraryApi.Tests", "GameLibraryApi.Tests\GameLibraryApi.Tests.csproj", "{475AB223-33A9-40D8-9F80-526D4119EE18}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLibraryFrontend", "GameLibraryFrontend\GameLibraryFrontend.csproj", "{F05AADDF-221B-4FB2-A4B9-CB3CDB33F8BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{475AB223-33A9-40D8-9F80-526D4119EE18}.Release|x64.Build.0 = Release|Any CPU
 		{475AB223-33A9-40D8-9F80-526D4119EE18}.Release|x86.ActiveCfg = Release|Any CPU
 		{475AB223-33A9-40D8-9F80-526D4119EE18}.Release|x86.Build.0 = Release|Any CPU
+		{F05AADDF-221B-4FB2-A4B9-CB3CDB33F8BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F05AADDF-221B-4FB2-A4B9-CB3CDB33F8BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F05AADDF-221B-4FB2-A4B9-CB3CDB33F8BA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F05AADDF-221B-4FB2-A4B9-CB3CDB33F8BA}.Debug|x64.Build.0 = Debug|Any CPU
+		{F05AADDF-221B-4FB2-A4B9-CB3CDB33F8BA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F05AADDF-221B-4FB2-A4B9-CB3CDB33F8BA}.Debug|x86.Build.0 = Debug|Any CPU
+		{F05AADDF-221B-4FB2-A4B9-CB3CDB33F8BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F05AADDF-221B-4FB2-A4B9-CB3CDB33F8BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F05AADDF-221B-4FB2-A4B9-CB3CDB33F8BA}.Release|x64.ActiveCfg = Release|Any CPU
+		{F05AADDF-221B-4FB2-A4B9-CB3CDB33F8BA}.Release|x64.Build.0 = Release|Any CPU
+		{F05AADDF-221B-4FB2-A4B9-CB3CDB33F8BA}.Release|x86.ActiveCfg = Release|Any CPU
+		{F05AADDF-221B-4FB2-A4B9-CB3CDB33F8BA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
