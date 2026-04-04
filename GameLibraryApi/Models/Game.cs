@@ -1,4 +1,4 @@
-namespace GameLibrary.Models;
+namespace GameLibraryApi.Models;
 
 public class Game
 {

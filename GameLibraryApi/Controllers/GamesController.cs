@@ -1,9 +1,9 @@
-using GameLibrary.Data;
-using GameLibrary.Models;
+using GameLibraryApi.Data;
+using GameLibraryApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace GameLibrary.Controllers;
+namespace GameLibraryApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

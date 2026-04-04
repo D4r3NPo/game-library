@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using GameLibrary.Data;
+using GameLibraryApi.Data;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 

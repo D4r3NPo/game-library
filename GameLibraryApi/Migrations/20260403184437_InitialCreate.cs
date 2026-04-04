@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace GameLibrary.Migrations
+namespace GameLibraryApi.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
