@@ -26,7 +26,7 @@ This project lets you create, read, update, and delete games, with filtering, se
 - ASP.NET Core Web API
 - Entity Framework Core
 - SQLite
-- Swagger / OpenAPI
+- OpenAPI
 
 ---
 
@@ -42,7 +42,7 @@ A game contains the following fields:
 - `Rating`
 
 ### Example statuses
-- `Backlog`
+- `ToDo`
 - `Playing`
 - `Finished`
 
