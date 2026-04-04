@@ -9,6 +9,14 @@ namespace GameLibrary.Controllers;
 [Route("api/[controller]")]
 public class GamesController(AppDbContext db) : ControllerBase
 {
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] Game game)
+    {
+        db.Games.Add(game);
+        await db.SaveChangesAsync();
+        return CreatedAtAction(nameof(GetById), new { id = game.Id }, game);
+    }
+
     [HttpGet]
     public async Task<IActionResult> Get()
     {
@@ -23,11 +31,35 @@ public class GamesController(AppDbContext db) : ControllerBase
         return game is null ? NotFound() : Ok(game);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Game game)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(string id, [FromBody] Game updatedGame)
     {
-        db.Games.Add(game);
+        if (updatedGame.Id != id) return BadRequest("'id' in URL do not match 'id' in provided data");
+
+        Game? existingGame = await db.Games.FindAsync(id);
+        if (existingGame is null) return NotFound();
+
+        existingGame.Title = updatedGame.Title;
+        existingGame.Platforms = updatedGame.Platforms;
+        existingGame.Genres = updatedGame.Genres;
+        existingGame.Status = updatedGame.Status;
+        existingGame.Rating =  updatedGame.Rating;
+
         await db.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetById), new { id = game.Id }, game);
+
+        return Ok();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        var game = await db.Games.FindAsync(id);
+        if (game is null) return NotFound();
+
+        db.Games.Remove(game);
+        
+        await db.SaveChangesAsync();
+
+        return NoContent();
     }
 }
