@@ -49,8 +49,8 @@ This project lets you create, read, update, and delete games, with filtering, se
 
 ### Search / filter examples
 `GET /api/games?title=zelda`  
-`GET /api/games?status=Playing`  
-`GET /api/games?platform=PC`
+`GET /api/games?status=InProgress`  
+`GET /api/games?platform=Windows`
 
 ---
 
