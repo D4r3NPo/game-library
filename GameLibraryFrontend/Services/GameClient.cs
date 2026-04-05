@@ -10,4 +10,12 @@ public class GameClient(HttpClient http)
     {
         return await _http.GetFromJsonAsync<List<GameResponseDto>>("api/games");
     }
+
+     public async Task<GameResponseDto?> CreateGameAsync(CreateGameDto dto)
+    {
+        var response = await _http.PostAsJsonAsync("api/games", dto);
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<GameResponseDto>();
+    }
 }
