@@ -1,5 +1,6 @@
+using GameLibrary.Shared.DTOs;
+using GameLibrary.Shared.Enums;
 using GameLibraryApi.Data;
-using GameLibraryApi.DTOs;
 using GameLibraryApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ public class GamesController(AppDbContext db) : ControllerBase
 		};
 		db.Games.Add(newGame);
 		await db.SaveChangesAsync();
-		return CreatedAtAction(nameof(GetById), new { id = newGame.Id }, new GameResponseDto(newGame));
+		return CreatedAtAction(nameof(GetById), new { id = newGame.Id }, newGame.ToGameResponseDto());
 	}
 
 	[HttpGet("{id}")]
@@ -34,12 +35,12 @@ public class GamesController(AppDbContext db) : ControllerBase
 	public async Task<IActionResult> GetById(string id)
 	{
 		var game = await db.Games.FindAsync(id);
-		return game is null ? NotFound() : Ok(new GameResponseDto(game));
+		return game is null ? NotFound() : Ok(game.ToGameResponseDto());
 	}
 
 	[HttpGet]
 	[ProducesResponseType(typeof(List<GameResponseDto>), StatusCodes.Status200OK)]
-	public async Task<IActionResult> Get([FromQuery] Status? status, [FromQuery] Platform? platform, [FromQuery] string? title)
+	public async Task<IActionResult> Get([FromQuery] GameStatus? status, [FromQuery] GamePlatform? platform, [FromQuery] string? title)
 	{
 		IQueryable<Game> query = db.Games;
 
@@ -52,7 +53,7 @@ public class GamesController(AppDbContext db) : ControllerBase
 		if (!string.IsNullOrWhiteSpace(title))
 			query = query.Where(g => g.Title.Contains(title));
 
-		List<GameResponseDto> games = await query.Select(g => new GameResponseDto(g)).ToListAsync();
+		List<GameResponseDto> games = await query.Select(g => g.ToGameResponseDto()).ToListAsync();
 		return Ok(games);
 	}
 
@@ -72,7 +73,7 @@ public class GamesController(AppDbContext db) : ControllerBase
 
 		await db.SaveChangesAsync();
 
-		return Ok(new GameResponseDto(existingGame));
+		return Ok(existingGame.ToGameResponseDto());
 	}
 
 	[HttpDelete("{id}")]

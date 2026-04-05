@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using GameLibraryApi.Models;
-using GameLibraryApi.DTOs;
+using GameLibrary.Shared.DTOs;
+using GameLibrary.Shared.Enums;
 
 namespace GameLibraryApi.Tests;
 
@@ -31,7 +31,7 @@ public class GamesApiTests
             Title = "Celeste",
             Platforms = [],
             Genres = [],
-            Status = Status.ToDo,
+            Status = GameStatus.ToDo,
             Rating = 10
         };
 
@@ -72,7 +72,7 @@ public class GamesApiTests
             Title = "Celeste",
             Platforms = [],
             Genres = [],
-            Status = Status.ToDo,
+            Status = GameStatus.ToDo,
             Rating = 10
         };
 
@@ -87,7 +87,7 @@ public class GamesApiTests
             Title = "Celeste",
             Platforms = [],
             Genres = [],
-            Status = Status.ToDo,
+            Status = GameStatus.ToDo,
             Rating = 2
         };
 
@@ -114,7 +114,7 @@ public class GamesApiTests
             Title = "",
             Platforms = [],
             Genres = [],
-            Status = Status.ToDo,
+            Status = GameStatus.ToDo,
             Rating = 5
         };
 
@@ -134,7 +134,7 @@ public class GamesApiTests
             Title = "Invalid Game",
             Platforms = [],
             Genres = [],
-            Status = Status.ToDo,
+            Status = GameStatus.ToDo,
             Rating = 15
         };
 
@@ -152,18 +152,18 @@ public class GamesApiTests
         var game1 = new CreateGameDto
         {
             Title = "Game 1",
-            Platforms = [Platform.Windows],
-            Genres = [Genre.RPG],
-            Status = Status.ToDo,
+            Platforms = [GamePlatform.Windows],
+            Genres = [GameGenre.RPG],
+            Status = GameStatus.ToDo,
             Rating = 5
         };
 
         var game2 = new CreateGameDto
         {
             Title = "Game 2",
-            Platforms = [Platform.Linux, Platform.Windows],
-            Genres = [Genre.FPS],
-            Status = Status.InProgress,
+            Platforms = [GamePlatform.Linux, GamePlatform.Windows],
+            Genres = [GameGenre.FPS],
+            Status = GameStatus.InProgress,
             Rating = 7
         };
 
@@ -202,18 +202,18 @@ public class GamesApiTests
         var game1 = new CreateGameDto
         {
             Title = "Game 1",
-            Platforms = [Platform.Windows],
-            Genres = [Genre.RPG],
-            Status = Status.ToDo,
+            Platforms = [GamePlatform.Windows],
+            Genres = [GameGenre.RPG],
+            Status = GameStatus.ToDo,
             Rating = 5
         };
 
         var game2 = new CreateGameDto
         {
             Title = "Game 2",
-            Platforms = [Platform.Linux, Platform.Windows],
-            Genres = [Genre.FPS],
-            Status = Status.InProgress,
+            Platforms = [GamePlatform.Linux, GamePlatform.Windows],
+            Genres = [GameGenre.FPS],
+            Status = GameStatus.InProgress,
             Rating = 7
         };
 
@@ -253,7 +253,7 @@ public class GamesApiTests
             Title = "Celeste",
             Platforms = [],
             Genres = [],
-            Status = Status.ToDo,
+            Status = GameStatus.ToDo,
             Rating = 2
         };
 
