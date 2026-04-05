@@ -1,24 +1,54 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 @using GameLibrary.Shared.DTOs
+@using GameLibrary.Shared.Enums
 @inject GameLibraryFrontend.Services.GameClient GameClient
+
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
-Welcome to your new app.
-
 <h2>Game List</h2>
+<section>
+    <div style="color: red;">
+        @if(requestError is not null){
+            <span>@requestError</span>
+        }
+    </div>
+    <input @bind="request.Title" />
+    <select @bind="request.Status">
+        <option value="@GameStatus.ToDo">ToDo</option>
+        <option value="@GameStatus.InProgress">InProgress</option>
+        <option value="@GameStatus.Done">Done</option>
+    </select>
+    <input type="number" @bind="request.Rating" />
+    <button @onclick="SendRequest">Add</button>
+</section>
+
 <ul>
-@foreach(var game in games){
-    <li>@game</li>
+@foreach(var game in games)
+{
+    <li>@game.Title | @game.Status | @game.Rating</li>
 }
 </ul>
 
 @code {
     private List<GameResponseDto> games = [];
 
+    private CreateGameDto request = new();
+    private string? requestError = null; 
+
     protected override async Task OnInitializedAsync()
     {
         games = (await GameClient.GetGamesAsync()) ?? [];
+    }
+
+    private async Task SendRequest() {
+        var result = await GameClient.CreateGameAsync(request);
+        if (result is null) {
+            requestError = "Game creation request is invalid";
+        }
+        else {
+            requestError = null;
+        }
     }
 }
 
