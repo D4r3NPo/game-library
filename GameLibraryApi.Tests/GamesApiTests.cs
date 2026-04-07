@@ -229,7 +229,7 @@ public class GamesApiTests
         Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
 
         var gameCountAfter = await GetGameCount();
-        Assert.Equal(2, gameCountBefore);
+        Assert.Equal(1, gameCountAfter);
 
         async Task<int> GetGameCount()
         {
