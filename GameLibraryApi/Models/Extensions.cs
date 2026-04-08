@@ -11,7 +11,7 @@ namespace GameLibraryApi.Models
             Platforms = game.Platforms,
             Genres = game.Genres,
             Status = game.Status,
-            Rating = game.Rating
+            Rating = game.Rating,
         };
     }
 }
