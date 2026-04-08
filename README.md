@@ -1,12 +1,15 @@
-# Game Library API
+# Game Library
 
-ASP.NET Core Web API for managing a personal game library.
+Full-stack ASP.NET project for managing a personal game library.
 
-This project lets you create, read, update, and delete games, with filtering, search, and validation.
+The solution includes a Web API, a Blazor frontend, shared DTOs/enums, and API integration tests. It lets you create, read, update, and delete games, then view and edit them from the UI.
 
-> It was built as a backend portfolio project to demonstrate clean API design with C#, ASP.NET Core, Entity Framework Core, and SQLite.
+## Projects
 
----
+- `GameLibraryApi`: ASP.NET Core Web API with Entity Framework Core and SQLite
+- `GameLibraryFrontend`: Blazor web frontend for listing, creating, editing, deleting, and viewing basic statistics
+- `GameLibrary.Shared`: shared DTOs and enums used by both backend and frontend
+- `GameLibraryApi.Tests`: integration tests for the API
 
 ## Features
 
@@ -14,21 +17,21 @@ This project lets you create, read, update, and delete games, with filtering, se
 - Search by title
 - Filter by status
 - Filter by platform
-- Data validation
+- Shared contracts between API and frontend
+- Blazor frontend for game management
+- Simple statistics page
 - SQLite database with Entity Framework Core
-- Test coverage
-
----
+- API integration tests
 
 ## Tech Stack
 
 - C#
 - ASP.NET Core Web API
+- Blazor
 - Entity Framework Core
 - SQLite
 - OpenAPI
-
----
+- xUnit
 
 ## API Endpoints
 
@@ -52,26 +55,35 @@ This project lets you create, read, update, and delete games, with filtering, se
 `GET /api/games?status=InProgress`  
 `GET /api/games?platform=Windows`
 
----
-
 ## Validation Rules
 
 - `Title` is required with length limited to 30
 - `Rating` must be between `0` and `10`
 
----
-
 ## Getting Started
 
 ### Prerequisites
 
-- .NET 10 SDK installed
+- .NET 10 SDK
 
-### Run locally
+### Run the API
 
 ```bash
-git clone https://github.com/D4r3NPo/game-library-api.git
-cd game-library-api
 dotnet restore
 dotnet ef database update --project GameLibraryApi
 dotnet run --project GameLibraryApi
+```
+
+### Run the frontend
+
+Set `ApiBaseUrl` in `GameLibraryFrontend/appsettings.json` or `GameLibraryFrontend/appsettings.Development.json`, then run:
+
+```bash
+dotnet run --project GameLibraryFrontend
+```
+
+### Run tests
+
+```bash
+dotnet test GameLibraryApi.sln
+```
