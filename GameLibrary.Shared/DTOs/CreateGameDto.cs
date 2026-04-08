@@ -3,7 +3,7 @@ using GameLibrary.Shared.Enums;
 
 namespace GameLibrary.Shared.DTOs;
 
-public class CreateGameDto
+public class CreateGameRequest
 {
     [Required, Length(1, 30)]
     public string Title { get; set; } = "";

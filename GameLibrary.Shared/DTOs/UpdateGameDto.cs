@@ -3,7 +3,7 @@ using GameLibrary.Shared.Enums;
 
 namespace GameLibrary.Shared.DTOs;
 
-public class UpdateGameDto
+public class UpdateGameRequest
 {
     [Length(1,30)]
     public string Title { get; set; } = "";

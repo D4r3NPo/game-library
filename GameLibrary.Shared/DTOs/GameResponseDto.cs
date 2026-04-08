@@ -2,7 +2,7 @@ using GameLibrary.Shared.Enums;
 
 namespace GameLibrary.Shared.DTOs;
 
-public class GameResponseDto
+public class GameResponse
 {
     public string Id { get; set; } = "";
     public string Title { get; set; } = "";
@@ -11,5 +11,5 @@ public class GameResponseDto
     public GameStatus Status { get; set; } = GameStatus.ToDo;
     public int? Rating { get; set; } = null;
 
-    public GameResponseDto() { }
+    public GameResponse() { }
 }

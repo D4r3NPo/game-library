@@ -4,7 +4,7 @@ namespace GameLibraryFrontend;
 
 public static class Extensions
 {
-    public static UpdateGameDto ToUpdateGameDto(this GameResponseDto dto) => new()
+    public static UpdateGameRequest ToUpdateGameDto(this GameResponse dto) => new()
     {
         Title = dto.Title,
         Platforms = dto.Platforms,

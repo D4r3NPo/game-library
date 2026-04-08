@@ -4,7 +4,7 @@ namespace GameLibraryApi.Models
 {
     public static class Extensions
     {
-        public static GameResponseDto ToGameResponseDto(this Game game) => new()
+        public static GameResponse ToGameResponseDto(this Game game) => new()
         {
             Id = game.Id,
             Title = game.Title,

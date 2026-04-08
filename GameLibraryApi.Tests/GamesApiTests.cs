@@ -26,7 +26,7 @@ public class GamesApiTests
         using var factory = CreateFactory();
         using var client = factory.CreateClient();
 
-        var gameCreationRequest = new CreateGameDto
+        var gameCreationRequest = new CreateGameRequest
         {
             Title = "Celeste",
             Platforms = [],
@@ -38,13 +38,13 @@ public class GamesApiTests
         var postResponse = await client.PostAsJsonAsync("/api/games", gameCreationRequest);
         Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
 
-        var gameCreationResponse = await postResponse.Content.ReadFromJsonAsync<GameResponseDto>();
+        var gameCreationResponse = await postResponse.Content.ReadFromJsonAsync<GameResponse>();
         Assert.NotNull(gameCreationResponse);
 
         var getResponse = await client.GetAsync($"/api/games/{gameCreationResponse.Id}");
         Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
 
-        var createdGame = await getResponse.Content.ReadFromJsonAsync<GameResponseDto>();
+        var createdGame = await getResponse.Content.ReadFromJsonAsync<GameResponse>();
 
         Assert.NotNull(gameCreationResponse);
         Assert.Equal("Celeste", gameCreationResponse.Title);
@@ -67,7 +67,7 @@ public class GamesApiTests
         using var factory = CreateFactory();
         using var client = factory.CreateClient();
 
-        var initialGame = new CreateGameDto
+        var initialGame = new CreateGameRequest
         {
             Title = "Celeste",
             Platforms = [],
@@ -79,10 +79,10 @@ public class GamesApiTests
         var createResponse = await client.PostAsJsonAsync("/api/games", initialGame);
         Assert.Equal(HttpStatusCode.Created, createResponse.StatusCode);
 
-        var createdGame = await createResponse.Content.ReadFromJsonAsync<GameResponseDto>();
+        var createdGame = await createResponse.Content.ReadFromJsonAsync<GameResponse>();
         Assert.NotNull(createdGame);
 
-        var updatedGame = new UpdateGameDto
+        var updatedGame = new UpdateGameRequest
         {
             Title = "Celeste",
             Platforms = [],
@@ -97,7 +97,7 @@ public class GamesApiTests
         var getUpdatedGameResponse = await client.GetAsync($"/api/games/{createdGame.Id}");
         Assert.Equal(HttpStatusCode.OK, getUpdatedGameResponse.StatusCode);
 
-        var retrievedUpdatedGame = await getUpdatedGameResponse.Content.ReadFromJsonAsync<GameResponseDto>();
+        var retrievedUpdatedGame = await getUpdatedGameResponse.Content.ReadFromJsonAsync<GameResponse>();
 
         Assert.NotNull(retrievedUpdatedGame);
         Assert.Equal(2, retrievedUpdatedGame.Rating);
@@ -109,7 +109,7 @@ public class GamesApiTests
         using var factory = CreateFactory();
         using var client = factory.CreateClient();
 
-        var game = new CreateGameDto
+        var game = new CreateGameRequest
         {
             Title = "",
             Platforms = [],
@@ -129,7 +129,7 @@ public class GamesApiTests
         using var factory = CreateFactory();
         using var client = factory.CreateClient();
 
-        var game = new CreateGameDto
+        var game = new CreateGameRequest
         {
             Title = "Invalid Game",
             Platforms = [],
@@ -149,7 +149,7 @@ public class GamesApiTests
         using var factory = CreateFactory();
         using var client = factory.CreateClient();
 
-        var game1 = new CreateGameDto
+        var game1 = new CreateGameRequest
         {
             Title = "Game 1",
             Platforms = [GamePlatform.Windows],
@@ -158,7 +158,7 @@ public class GamesApiTests
             Rating = 5
         };
 
-        var game2 = new CreateGameDto
+        var game2 = new CreateGameRequest
         {
             Title = "Game 2",
             Platforms = [GamePlatform.Linux, GamePlatform.Windows],
@@ -173,7 +173,7 @@ public class GamesApiTests
         var response = await client.GetAsync("/api/games?status=ToDo&platform=Windows");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        var games = await response.Content.ReadFromJsonAsync<List<GameResponseDto>>();
+        var games = await response.Content.ReadFromJsonAsync<List<GameResponse>>();
         Assert.NotNull(games);
         Assert.Single(games);
         Assert.Equal(game1.Title, games[0].Title);
@@ -181,14 +181,14 @@ public class GamesApiTests
         response = await client.GetAsync("/api/games?platform=Windows");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        games = await response.Content.ReadFromJsonAsync<List<GameResponseDto>>();
+        games = await response.Content.ReadFromJsonAsync<List<GameResponse>>();
         Assert.NotNull(games);
         Assert.Equal(2, games.Count);
 
         response = await client.GetAsync("/api/games?title=Game");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        games = await response.Content.ReadFromJsonAsync<List<GameResponseDto>>();
+        games = await response.Content.ReadFromJsonAsync<List<GameResponse>>();
         Assert.NotNull(games);
         Assert.Equal(2, games.Count);
     }
@@ -199,7 +199,7 @@ public class GamesApiTests
         using var factory = CreateFactory();
         using var client = factory.CreateClient();
 
-        var game1 = new CreateGameDto
+        var game1 = new CreateGameRequest
         {
             Title = "Game 1",
             Platforms = [GamePlatform.Windows],
@@ -208,7 +208,7 @@ public class GamesApiTests
             Rating = 5
         };
 
-        var game2 = new CreateGameDto
+        var game2 = new CreateGameRequest
         {
             Title = "Game 2",
             Platforms = [GamePlatform.Linux, GamePlatform.Windows],
@@ -219,7 +219,7 @@ public class GamesApiTests
 
         await client.PostAsJsonAsync("/api/games", game1);
         var postResponse = await client.PostAsJsonAsync("/api/games", game2);
-        var game2Id = (await postResponse.Content.ReadFromJsonAsync<GameResponseDto>())?.Id;
+        var game2Id = (await postResponse.Content.ReadFromJsonAsync<GameResponse>())?.Id;
         Assert.NotNull(game2Id);
 
         var gameCountBefore = await GetGameCount();
@@ -235,7 +235,7 @@ public class GamesApiTests
         {
             var response = await client.GetAsync("/api/games");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            var games = await response.Content.ReadFromJsonAsync<List<GameResponseDto>>();
+            var games = await response.Content.ReadFromJsonAsync<List<GameResponse>>();
             Assert.NotNull(games);
             return games.Count;
         }
@@ -248,7 +248,7 @@ public class GamesApiTests
         using var factory = CreateFactory();
         using var client = factory.CreateClient();
 
-         var updatedGame = new UpdateGameDto
+         var updatedGame = new UpdateGameRequest
         {
             Title = "Celeste",
             Platforms = [],

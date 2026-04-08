@@ -12,8 +12,8 @@ namespace GameLibraryApi.Controllers;
 public class GamesController(AppDbContext db) : ControllerBase
 {
 	[HttpPost]
-	[ProducesResponseType(typeof(GameResponseDto), StatusCodes.Status201Created)]
-	public async Task<IActionResult> Create([FromBody] CreateGameDto dto)
+	[ProducesResponseType(typeof(GameResponse), StatusCodes.Status201Created)]
+	public async Task<IActionResult> Create([FromBody] CreateGameRequest dto)
 	{
 		var newGame = new Game
 		{
@@ -30,7 +30,7 @@ public class GamesController(AppDbContext db) : ControllerBase
 	}
 
 	[HttpGet("{id}")]
-	[ProducesResponseType(typeof(GameResponseDto), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(GameResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> GetById(string id)
 	{
@@ -39,7 +39,7 @@ public class GamesController(AppDbContext db) : ControllerBase
 	}
 
 	[HttpGet]
-	[ProducesResponseType(typeof(List<GameResponseDto>), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(List<GameResponse>), StatusCodes.Status200OK)]
 	public async Task<IActionResult> Get([FromQuery] GameStatus? status, [FromQuery] GamePlatform? platform, [FromQuery] string? title)
 	{
 		IQueryable<Game> query = db.Games;
@@ -53,14 +53,14 @@ public class GamesController(AppDbContext db) : ControllerBase
 		if (!string.IsNullOrWhiteSpace(title))
 			query = query.Where(g => g.Title.Contains(title));
 
-		List<GameResponseDto> games = await query.Select(g => g.ToGameResponseDto()).ToListAsync();
+		List<GameResponse> games = await query.Select(g => g.ToGameResponseDto()).ToListAsync();
 		return Ok(games);
 	}
 
 	[HttpPut("{id}")]
-	[ProducesResponseType(typeof(GameResponseDto), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(GameResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<IActionResult> Update(string id, [FromBody] UpdateGameDto dto)
+	public async Task<IActionResult> Update(string id, [FromBody] UpdateGameRequest dto)
 	{
 		Game? existingGame = await db.Games.FindAsync(id);
 		if (existingGame is null) return NotFound();
